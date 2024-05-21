@@ -13,14 +13,30 @@ import HelloWorld from './components/HelloWorld.vue'
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/example">Example</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+  <RouterView v-slot="{ Component }">
+    <Transition name="route" mode="out-in">
+      <component :is="Component" />
+    </Transition>
+  </RouterView>
 </template>
 
 <style scoped>
+.route-leave-from {
+  opacity: 1;
+}
+.route-enter-from {
+  opacity: 0;
+}
+.route-enter-active,
+.route-leave-active {
+  transition: opacity 0.2s ease-out;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
