@@ -1,13 +1,38 @@
 <script setup lang="ts">
-defineProps<{
+import { ref, onMounted } from 'vue'
+
+const props = defineProps<{
   msg: string
 }>()
+
+const emits = defineEmits<{
+  (event: 'complete'): void
+}>()
+
+const typingMessage = ref('')
+
+const typeMessage = () => {
+  let i = 0
+  const interval = setInterval(() => {
+    if (i === props.msg.length) {
+      clearInterval(interval)
+      emits('complete')
+      return
+    }
+    typingMessage.value += props.msg[i]
+    i++
+  }, 50)
+}
+
+onMounted(() => {
+  typeMessage()
+})
 </script>
 
 <template>
   <div class="message-box-wrapper">
     <TransitionGroup tag="span" name="typing">
-      <span v-for="(word, idx) in msg" :key="word + idx">{{ word }}</span>
+      <span v-for="(word, idx) in typingMessage" :key="word + idx">{{ word }}</span>
     </TransitionGroup>
   </div>
 </template>
@@ -34,7 +59,6 @@ span {
   color: #111;
   font-weight: 600;
 }
-
 .typing-enter-from {
   opacity: 0;
 }
@@ -42,6 +66,6 @@ span {
   opacity: 1;
 }
 .typing-enter-active {
-  transition: opacity 1s ease;
+  transition: opacity 0.01s;
 }
 </style>

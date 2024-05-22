@@ -12,8 +12,8 @@ const onShowMessage = () => {
   <main>
     <h1>Example</h1>
     <section class="box-container">
-      <Transition name="box" appear @after-appear="onShowMessage">
-        <MessageBox msg="Hello, world!" />
+      <Transition name="box" appear>
+        <MessageBox show msg="Hello, world!" @complete="onShowMessage" />
       </Transition>
       <Transition name="box">
         <MessageBox v-if="firstDone" msg="Welcome to the Example message." />
@@ -37,6 +37,9 @@ main {
   border-radius: 16px;
   padding: 16px;
   gap: 16px;
+}
+.second-box:not(.show) {
+  opacity: 0;
 }
 .box-enter-from {
   opacity: 0;
